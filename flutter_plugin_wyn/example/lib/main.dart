@@ -26,6 +26,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
+
+    FlutterPluginWyn.initListener();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -67,6 +69,15 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> _postWynMessage() async {
+    String message;
+    try {
+      await _flutterPluginWynPlugin.postMessage("我是pos wyn message");
+    } on PlatformException {
+      message = "获取失败了";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -78,10 +89,18 @@ class _MyAppState extends State<MyApp> {
               Text('Running on: $_platformVersion\n'),
               Padding(
                 padding: EdgeInsets.only(top: 30),
-                child: ElevatedButton(onPressed: _fetchWynMessage, child: Text("点我啊你")),
+                child: ElevatedButton(onPressed: _fetchWynMessage, child: Text("调用toast访问")),
               ),
               Padding(padding: EdgeInsets.only(top: 15), child: Text("message is $_wynMessage")),
               Padding(padding: EdgeInsets.only(top: 15), child: Text("batteryLevel is $_batteryLevel")),
+              Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: ElevatedButton(onPressed: initPlatformState, child: Text("主动获取电池信息")),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: ElevatedButton(onPressed: _postWynMessage, child: Text("向native发信息，并监听")),
+              ),
 
             ],
           ),

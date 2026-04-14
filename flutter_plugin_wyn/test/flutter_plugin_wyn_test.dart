@@ -12,6 +12,11 @@ class MockFlutterPluginWynPlatform with MockPlatformInterfaceMixin implements Fl
   Future<String> showToastPlugin() {
     return Future.value("我就是我");
   }
+
+  @override
+  Future<void> postMessage(String message) {
+    return Future.value();
+  }
 }
 
 void main() {
